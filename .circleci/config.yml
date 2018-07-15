@@ -1,0 +1,38 @@
+version: 2
+
+jobs:
+  build_image:
+    machine:
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+        name: build test image
+        command: docker build -t test:latest .
+  run_container_1:
+    docker:
+      - image: test:latest
+    steps:
+      - checkout
+      - run:
+        name: run command using pre-built image in the workflow
+        command: docker run --rm -v $PWD:/workspace test:latest test_1.sh
+  run_container_2:
+    docker:
+      - image: test:latest
+    steps:
+      - checkout
+      - run:
+        name: create artifacts using pre-built image in the workflow
+        command: docker run --rm -v $PWD:/workspace test:latest test_2.sh
+      - store_artifacts:
+        path: artifacts
+
+workflows:
+  version: 2
+  jobs:
+    - build_image
+    - run_container_1:
+      - requires: build_image
+    - run_container_2:
+      - requires: build_image
