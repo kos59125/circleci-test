@@ -9,26 +9,26 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-        name: build test image
-        command: docker build -t test:latest .
+          name: build test image
+          command: docker build -t test:latest .
   run_container_1:
     docker:
       - image: docker:18.05.0-ce
     steps:
       - checkout
       - run:
-        name: run command using pre-built image in the workflow
-        command: docker run --rm -v $PWD:/workspace test:latest test_1.sh
+          name: run command using pre-built image in the workflow
+          command: docker run --rm -v $PWD:/workspace test:latest test_1.sh
   run_container_2:
     docker:
       - image: docker:18.05.0-ce
     steps:
       - checkout
       - run:
-        name: create artifacts using pre-built image in the workflow
-        command: docker run --rm -v $PWD:/workspace test:latest test_2.sh
+          name: create artifacts using pre-built image in the workflow
+          command: docker run --rm -v $PWD:/workspace test:latest test_2.sh
       - store_artifacts:
-        path: artifacts
+          path: artifacts
 
 workflows:
   version: 2
