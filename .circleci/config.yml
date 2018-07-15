@@ -2,16 +2,18 @@ version: 2
 
 jobs:
   build_image:
-    machine:
-      docker_layer_caching: true
+    docker:
+      - image: docker:18.05.0-ce
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
         name: build test image
         command: docker build -t test:latest .
   run_container_1:
     docker:
-      - image: test:latest
+      - image: docker:18.05.0-ce
     steps:
       - checkout
       - run:
@@ -19,7 +21,7 @@ jobs:
         command: docker run --rm -v $PWD:/workspace test:latest test_1.sh
   run_container_2:
     docker:
-      - image: test:latest
+      - image: docker:18.05.0-ce
     steps:
       - checkout
       - run:
