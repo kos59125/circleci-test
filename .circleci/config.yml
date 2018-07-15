@@ -30,9 +30,10 @@ jobs:
 
 workflows:
   version: 2
-  jobs:
-    - build_image
-    - run_container_1:
-      - requires: build_image
-    - run_container_2:
-      - requires: build_image
+  build_and_run:
+    jobs:
+      - build_image
+      - run_container_1:
+        - requires: build_image
+      - run_container_2:
+        - requires: build_image
