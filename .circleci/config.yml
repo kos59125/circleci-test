@@ -34,8 +34,8 @@ workflows:
     jobs:
       - build_image
       - run_container_1:
-        requires:
-          - build_image
+          requires:
+            - build_image
       - run_container_2:
-        requires:
-          - build_image
+          requires:
+            - build_image
